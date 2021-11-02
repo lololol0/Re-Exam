@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+    <title>Создание комнаты</title>
+</head>
+<div class="container mt-5">
+    <h1>Создать</h1>
+    <form action="/addRoom"  method="post">
+        <input type="text" name="title" placeholder="Введите название комнаты" class="form-control">
+        <input type="hidden" name="_csrf" value="${_csrf.token}"/><br>
+
+        <button type="submit" class="btn btn-secondary">Добавить</button>
+    </form>
+</div>
+<body>
+</body>
+</html>

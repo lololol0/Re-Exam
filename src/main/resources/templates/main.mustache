@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>Комнаты</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+</head>
+
+<form action="/logout" method="post">
+    <button type="submit" class="btn btn-secondary btn-sm">Logout</button>
+</form>
+
+<div class="container mt-5">
+    <a href="/addRoom" class="btn btn-secondary">Добавить комнату</a>
+    <br>
+    <br>
+    <h3> Пользователь: {{user}}</h3>
+    <a> Изменить никнейм </a>
+    <form action="/edit_nickname" method="post">
+        <input type="text" name="name" placeholder="Новый ник" class="form-control">
+        <h2></h2>
+        <button type="submit" class="btn btn-secondary">изменить</button>
+    </form>
+</div>
+
+<div class="container mt-5">
+    <h3>Открытые Комнаты:</h3>
+    {{#openRooms}}
+        <a href="/enter_room/{{id}}">{{title}}</a><br>
+    {{/openRooms}}
+    <br>
+    <h3>Приватные комнаты:</h3>
+    {{#closeRooms}}
+        <a href="/enter_room/{{id}}">{{title}}</a><br>
+    {{/closeRooms}}
+</div>
+</body>
+</html>
