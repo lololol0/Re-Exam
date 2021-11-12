@@ -40,7 +40,7 @@ public class RoomService {
         return room.getUsers();
     }
 
-    public void addUser(Room room, User user) {
+    public void addUserAndRoom(Room room, User user) {
         room.getUsers().add(user);
         user.getRooms().add(room);
 

@@ -16,7 +16,7 @@
     <br>
     <h3> Пользователь: {{user}}</h3>
     <a> Изменить никнейм </a>
-    <form action="/edit_nickname" method="post">
+    <form action="/editNickname" method="post">
         <input type="text" name="name" placeholder="Новый ник" class="form-control">
         <h2></h2>
         <button type="submit" class="btn btn-secondary">изменить</button>
@@ -34,5 +34,8 @@
         <a href="/enter_room/{{id}}">{{title}}</a><br>
     {{/closeRooms}}
 </div>
+<br>
+<br>
+
 </body>
 </html>

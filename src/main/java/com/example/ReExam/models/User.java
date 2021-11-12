@@ -30,9 +30,11 @@ public class User implements UserDetails {
     @JoinTable(
             name = "user_rooms",
             joinColumns = { @JoinColumn(name = "room_id") },
-            inverseJoinColumns = { @JoinColumn(name = "user_id")}
-    )
+            inverseJoinColumns = { @JoinColumn(name = "user_id")})
     private List<Room> rooms;
+
+    public User() {
+    }
 
     public List<Room> getRooms() {
         if (rooms == null) {
@@ -41,9 +43,8 @@ public class User implements UserDetails {
         return rooms;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+    public void setRooms(List<Room> rooms) {
+        this.rooms = rooms;
     }
 
     public String getId() {
@@ -62,6 +63,15 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return Optional.ofNullable(username).orElse("guest");
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
     }
 
     @Override

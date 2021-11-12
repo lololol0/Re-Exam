@@ -19,8 +19,9 @@
     <br>
     <h3> Сообщения </h3>
     <div id="content">
-
     </div>
+
+<!--     отправляем сообщения-->
     <form id="message_form">
         <input type="text" id="message_field" name="text" placeholder="Введите сообщение" class="form-control">
         <h2> </h2>
@@ -34,7 +35,6 @@
         {{username}}<br>
     {{/users}}
     {{#is_admin}}
-
         <br>
         <br><h2>Редактирование</h2>
         <form action="/{{roomId}}/add_user" method="post">
@@ -58,32 +58,39 @@
         </form><br>
         <br>
     {{/is_admin}}
+    <br>
+    <br>
 </div>
-
-
-
 </body>
+
 <script type="text/javascript">
+    // у нас есть форма в которой мы работает
     const form = $("#message_form");
-    form.submit(function (e) {
-        $.ajax({
-            url: "/{{roomId}}/send_message",
-            method: 'POST',
-            data: jQuery.param({text: $("#message_field").val()}),
-            success: () => {
-                form[0].reset();
-                doRefresh();
-            }
-        });
-        e.preventDefault();
-    });
     function doRefresh() {
         $.ajax({
+            //Строка, содержащая URL адрес, на который отправляется запрос.
             url: "/api/{{roomId}}/all-messages",
+            // Ожидаемый тип данных
+            //Обратите внимание, что значение параметра,
+            // указанного в dataType (тип данных, которые мы ожидаем от сервера) сопоставляется с указанным в параметре.
             dataType: "text",
+            // в случае успешного выполнения запроса
+            // если запрос успешен вызываем функцию
             success: function (data) {
+                // получаем все данные, но не можем к ним обратится поэтому
+                // Используем JavaScript функцию JSON.parse(), чтобы преобразовать этот текст в объект JavaScript:
                 const json = $.parseJSON(data);
+                // {messages: Array(2)}messages: Array(2)0: {id: 109, stringDate: '2021-11-12 04:48:39', username: 'user1', message: 'hello'}
+                // {"messages":[{"id":109,"stringDate":"2021-11-12 04:48:39","username":"user1","message":"hello"},
+                // {"id":110,"stringDate":"2021-11-12 04:48:49","username":"user1","message":"lol"},
+                // {"id":111,"stringDate":"2021-11-12 05:11:04","username":"user1","message":"bbbb"}]}
+                console.log(data);
+                // передаем в наш html шаблон
+                // заменем наш content на .html('Новый HTML контент...')
                 $("#content").html(
+                        //Метод map() создаёт новый массив
+                        // с результатом вызова указанной функции для каждого элемента массива.
+                        // .join("\n") - преобразуем в к типу String через \n
                         json["messages"].map(function (msg) {
                             return "<br><b>" + msg["stringDate"] + "<br>" + msg["username"] + ":</b> " + msg["message"] + "</br>";
                         }).join("\n")
@@ -91,9 +98,34 @@
             }
         });
     }
+    //  обработчик событий submit
+    form.submit(function (evt) {
+        $.ajax({
+            //Строка, содержащая URL адрес, на который отправляется запрос.
+            url: "/{{roomId}}/send_message",
+            // метод HTTP, используемый для запроса
+            method: 'POST',
+            // Данные, которые будут переданы на сервер.
+            // .val() - достаём значение из элемента $("#message_field")
+            // Преобразует объект или массив в сериализованную строку для использования в URL при Ajax запросах.
+            data: jQuery.param({text: $("#message_field").val()}),
+            success: () => {
+                // Очищаем поля формы
+                form[0].reset();
+                // автообновляем данные
+                doRefresh();
+            }
+        });
+        // Один из методов как раз позволяет отменить действие браузера по умолчанию — preventDefault()
+        // Отменяем переход по ссылке
+        evt.preventDefault();
+    });
     doRefresh();
     $(function () {
+        // setInterval позволяет вызывать функцию регулярно, повторяя вызов через определённый интервал времени.
+        // запуск функции каждые 1c
         setInterval(doRefresh, 1000);
     });
 </script>
+
 </html>

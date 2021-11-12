@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,8 +44,7 @@ public class RoomController {
     @GetMapping("/room/{id}")
     public String getRoom(
             Model model,
-            @PathVariable(value = "id") String id,
-            @ModelAttribute("error") String error)
+            @PathVariable(value = "id") String id)
     {
         Room room = roomService.getRoomById(id);
         List<MessageApi> messagesByRoom = messageRepository.findAllMessagesByRoom(room);
@@ -97,7 +95,7 @@ public class RoomController {
         try {
             User user = (User) userService.loadUserByUsername(username);
             Room room = roomService.getRoomById(id);
-            roomService.addUser(room, user);
+            roomService.addUserAndRoom(room, user);
         } catch (Exception e) {
             return "redirect:/error";
 
